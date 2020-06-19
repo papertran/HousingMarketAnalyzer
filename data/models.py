@@ -2,12 +2,13 @@ from django.db import models
 
 # Create your models here.
 class House(models.Model):
-    transDate = models.FloatField()
-    houseAge = models.FloatField()
-    distToNearStation = models.FloatField()
-    numStore = models.FloatField()
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    price = models.FloatField()
-	predicted = models.BooleanField()
+    houseId = models.IntField()
+    region = models.CharField()
+    HouseType = models.CharField()
+
+class Price(models.Model):
+    priceId = models.IntField()
+    houseId = models.IntField()
+    listingDate = models.DateTime()
+    Price = models.IntField()
     
