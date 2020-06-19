@@ -2,13 +2,13 @@ from django.db import models
 
 # Create your models here.
 class House(models.Model):
-    houseId = models.IntField()
-    region = models.CharField()
-    HouseType = models.CharField()
+    houseId = models.IntegerField()
+    region = models.CharField(max_length=100)
+    HouseType = models.CharField(max_length=100)
 
 class Price(models.Model):
-    priceId = models.IntField()
-    houseId = models.IntField()
-    listingDate = models.DateTime()
-    Price = models.IntField()
+    priceId = models.IntegerField()
+    houseId = models.IntegerField()
+    listingDate = models.DateTimeField()
+    Price = models.IntegerField()
     
