@@ -2,7 +2,7 @@
 	"python.linting.pylintEnabled": true,
 	"python.linting.pylintArgs": [
 		"--disable=C0111", // missing docstring
-		"--load-plugins=pylint_django,pylint_celery",
+		"--load-plugins=pylint_django,pylint_celery"
 	],
-	"python.pythonPath": "env/bin/python",
+	"python.pythonPath": "env/bin/python"
 }
