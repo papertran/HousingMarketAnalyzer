@@ -1,6 +1,7 @@
 import sys
 import os
 import sqlite3
+import csv
 # Usage - python3 dataLoadScript.py <filename>
 # This does not error check. assumes folder contains only files with correct format
 
@@ -10,26 +11,86 @@ if len(sys.argv) == 1:
 
 # constants to use
 months = ["4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2", "3"]
-year = 2010
+
 # Variable setup
 lines = []
+year = 2010
+con = sqlite3.connect('db.sqlite3')
+# SQL Statements
 
-print(os.listdir(sys.argv[1]))
+
+# print(os.listdir(sys.argv[1]))
 
 # Load all files from a directory
 for filename in os.listdir(sys.argv[1]):
 	with open(os.path.join(sys.argv[1], filename), 'r') as file:
-		data = file.readlines()
-		for line in data[3:]:
-			lines.append(line.strip())
+		# data = file.readlines()
+		spamreader = csv.reader(file, delimiter=',')
+		skipLines = 0
+		for row in spamreader:
+			skipLines += 1
+			if skipLines < 3:
+				continue
+			lines.append(row)
+
 
 # print(lines[0])
-print(lines[0])
-
-# # Remember to ignore the first 3 lines
 # print(lines[0])
+# print(len(lines))
 
-# for house in lines[3:4]:
-# 	houseVariables = house.split(',')
-# 	# Insert into the data_house the house
-# 	print(houseVariables[0:4])
+inserVal = 1
+for house in lines:
+	# some houses have no data in the price, then skip those
+	if house[3] == '':
+		continue
+
+	# To show that stuff is inserting
+	if inserVal % 100 == 0:
+		print(inserVal)
+	inserVal += 1
+
+	houseInsert ="insert into data_house (region, HouseType) Values ('{}', '{}');".format(house[0], house[2])
+	
+	# Insert into the House table
+	try:
+		con.execute(houseInsert)
+	except Exception as e:
+		print("error: ", end='')
+		print(e)
+	con.commit()
+
+	# Get the house that we just inserted
+	findHouseId = "SELECT id FROM data_house WHERE region = '{}' AND HouseType = '{}'".format(house[0], house[2])
+	cur = con.cursor()
+	cur.execute(findHouseId)
+	houseId = cur.fetchone()[0]
+	# print(houseId)
+
+
+	# Insert into the Price Table
+	counter = 0
+	dateFormat = "{}-{}-1"
+	for value in house[3:]:
+		priceInsert = "INSERT INTO data_price (listingDate, Price, houseId_id) VALUES ('{}', '{}', '{}')"
+		cleanedValue = int(value.replace(',', '').replace('$', ''))
+		date = dateFormat.format(year, months[counter])
+		
+		# Set the next month and check if the next month is in the new year
+		if counter == 9:
+			year += 1
+		if counter ==  11:
+			counter = 0
+		else:
+			counter += 1
+		
+		try:
+			con.execute(priceInsert.format(date, cleanedValue, houseId))
+		except Exception as e:
+			print("error: ", end='')
+			print(e)
+		
+	year = 2010
+	con.commit()
+
+
+con.close

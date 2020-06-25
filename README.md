@@ -23,8 +23,8 @@ Delete the `db.sqlite3` and all files inside of `data/migrations` then run
 Create a super user afterwards to access the admin pannel
 
 ## Load test data
-Run the command 
-#### `python3 manage.py loaddata testdata.json`
+Run the script, and make sure that the newest database is created. If there are errors, delete the database and re-migrate
+#### `python3 dataLoadScript.py HousingData/`
 
 ## Enable linting in VScode
 add the following to the settings.json file 
