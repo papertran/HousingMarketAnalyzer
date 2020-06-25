@@ -5,17 +5,18 @@ class House(models.Model):
     # houseId = models.IntegerField()
     region = models.CharField(max_length=100)
     type_choices = [
-        ('Single', 'Single Family'),
+        ('All Homes', 'All Homes'),
+        ('Single Family', 'Single Family'),
         ('Condo', 'Condo'),
-        ('Top', 'Top Tier'),
-        ('Middle', 'Middle Tier'),
-        ('Bottom', 'Bottom Tier'),
+        ('Top Tier', 'Top Tier'),
+        ('Middle Tier', 'Middle Tier'),
+        ('Bottom Tier', 'Bottom Tier'),
         ('Studio', 'Studio'),
-        ('One', 'One Bed'),
-        ('Two', 'Two Bed'),
-        ('Three', 'Three Bed'),
-        ('Four', 'Four Bed'),
-        ('Many', 'Many Bed'),
+        ('One Bed', 'One Bed'),
+        ('Two Bed', 'Two Bed'),
+        ('Three Bed', 'Three Bed'),
+        ('Four Four', 'Four Bed'),
+        ('Many Four', 'Many Bed'),
     ]
     HouseType = models.CharField(max_length=100, choices=type_choices)
 
