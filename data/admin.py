@@ -4,10 +4,10 @@ from django.contrib import admin
 from .models import House, Price
 
 class HouseAdmin(admin.ModelAdmin):
-	list_display = ['houseId', 'region', 'HouseType']
+	list_display = ['region', 'HouseType']
 
 class PriceAdmin(admin.ModelAdmin):
-	list_display = ['houseId', 'Price']
+	list_display = ['houseId', 'Price', 'listingDate']
 
 admin.site.register(House, HouseAdmin)
 admin.site.register(Price, PriceAdmin)
