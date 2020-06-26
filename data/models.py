@@ -29,7 +29,8 @@ class Price(models.Model):
     houseId = models.ForeignKey(House, on_delete=models.CASCADE)
     listingDate = models.DateField(blank=False)
     Price = models.IntegerField()
-
+    Predicted = models.BooleanField()
+    
     def __str__(self):
         return "{} - {} - {}".format(self.houseId, self.listingDate, self.Price)
     

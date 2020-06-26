@@ -71,7 +71,7 @@ for house in lines:
 	counter = 0
 	dateFormat = "{}-{}-1"
 	for value in house[3:]:
-		priceInsert = "INSERT INTO data_price (listingDate, Price, houseId_id) VALUES ('{}', '{}', '{}')"
+		priceInsert = "INSERT INTO data_price (listingDate, Price, houseId_id, Predicted) VALUES ('{}', '{}', '{}', False)"
 		cleanedValue = int(value.replace(',', '').replace('$', ''))
 		date = dateFormat.format(year, months[counter])
 		

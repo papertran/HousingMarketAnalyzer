@@ -7,7 +7,7 @@ class HouseAdmin(admin.ModelAdmin):
 	list_display = ['region', 'HouseType']
 
 class PriceAdmin(admin.ModelAdmin):
-	list_display = ['houseId', 'Price', 'listingDate']
+	list_display = ['houseId', 'Price', 'listingDate', 'Predicted']
 
 admin.site.register(House, HouseAdmin)
 admin.site.register(Price, PriceAdmin)
