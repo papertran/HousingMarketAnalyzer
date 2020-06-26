@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.db import connection
+from matplotlib import pyplot as plt
+from matplotlib import dates as mpDates
 from .forms import queryForm
 
 # Create your views here.
@@ -23,4 +26,30 @@ def future_view(request):
 
 def current_view(request):
 	context = {}
+	return render(request, 'data/current.html', context=context)
+
+def create_plot(request):
+	context = {}
+	cursor = connection.cursor()
+	region = 'Tallahassee Metro'
+	houseType = 'Studio'
+	cursor.execute("SELECT id FROM data_house WHERE region = '{}' AND HouseType = '{}'".format(region, houseType))
+	id = cursor.fetchone()[0]
+
+
+	cursor.execute("SELECT Price, listingDate FROM data_price WHERE houseId_id = '{}' ".format(id))
+	data = cursor.fetchall()
+	
+	dates = []
+	prices =[]
+
+	for price in data:
+		prices.append(price[0])
+		dates.append( price[1])
+
+	plt.plot(dates, prices)
+	plt.title(region)
+	plt.xlabel('Years')
+	plt.savefig('plot/plot.png')
+
 	return render(request, 'data/current.html', context=context)
