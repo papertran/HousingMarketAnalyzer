@@ -247,3 +247,7 @@ GitHub.sublime-settings
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+
+plot/plot.png
+
+db.sqlite3Zone.Identifier
