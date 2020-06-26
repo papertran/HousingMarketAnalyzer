@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .forms import queryForm
 
 # Create your views here.
 def index_view(request):
@@ -8,6 +9,16 @@ def index_view(request):
 
 def future_view(request):
 	context = {}
+
+	# Do this after the user enters in data
+	if(request.POST):
+		form = queryForm()
+		context['query_form'] = form
+	else:
+		form = queryForm()
+		context['query_form'] = form
+
+
 	return render(request, 'data/future.html', context=context)
 
 def current_view(request):

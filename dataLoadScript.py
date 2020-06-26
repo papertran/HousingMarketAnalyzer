@@ -76,7 +76,7 @@ for house in lines:
 		date = dateFormat.format(year, months[counter])
 		
 		# Set the next month and check if the next month is in the new year
-		if counter == 9:
+		if counter == 8:
 			year += 1
 		if counter ==  11:
 			counter = 0
