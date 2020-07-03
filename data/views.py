@@ -13,13 +13,48 @@ def index_view(request):
 def future_view(request):
 	context = {}
 
+	
 	# Do this after the user enters in data
 	if(request.POST):
-		form = queryForm()
-		context['query_form'] = form
+		form = queryForm(request.POST)
+		if form.is_valid() == False:
+			context['query_form'] = queryForm()
+			return render(request, 'data/future.html', context=context)
+
+		region = form.cleaned_data['region']
+		houseType = form.cleaned_data['houseType']
+		startDate = form.cleaned_data['startDate']
+		endDate = form.cleaned_data['endDate']
+		# print(region,houseType,startDate,endDate)
+		with connection.cursor() as cursor:
+			# Get House ID
+			cursor.execute("SELECT id FROM data_house WHERE region = '{}' AND HouseType = '{}'".format(region, houseType))
+			HouseId = cursor.fetchone()[0]
+
+			context['region'] = region 
+			context['type'] = houseType
+			# Get listings
+			cursor.execute("""
+			SELECT Price, listingDate FROM data_price WHERE 
+			houseId_id = '{}' 
+			AND ( listingDate >= '{}' AND listingDate <= '{}')
+			ORDER BY listingDate DESC
+			""".format(HouseId, startDate, endDate))
+			query = cursor.fetchall()
+			data = []
+			for item in query:
+				info = {
+					# 'price' : item[0],
+					'price': f"{item[0]:,d}",
+					'date' : item[1]
+				}
+				data.append(info)
+			context['data'] = data
+
 	else:
 		form = queryForm()
 		context['query_form'] = form
+
 
 
 	return render(request, 'data/future.html', context=context)
