@@ -248,6 +248,4 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 
-plot/plot.png
-
 db.sqlite3Zone.Identifier
