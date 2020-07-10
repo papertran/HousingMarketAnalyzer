@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.db import connection
 from matplotlib import pyplot as plt
 from matplotlib import dates as mpDates
@@ -10,7 +11,43 @@ def index_view(request):
 	context = {}
 	return render(request, 'data/index.html', context=context)
 
-def future_view(request):
+# Helper Function
+def create_plot(region, houseType, startDate, endDate,):
+	plt.cla()
+	context = {}
+	cursor = connection.cursor()
+	# region = 'Tallahassee Metro'
+	# houseType = 'Studio'
+	cursor.execute("SELECT id FROM data_house WHERE region = '{}' AND HouseType = '{}'".format(region, houseType))
+	id = cursor.fetchone()[0]
+
+
+	# cursor.execute("SELECT Price, listingDate FROM data_price WHERE houseId_id = '{}' ".format(id))
+	cursor.execute("""
+	SELECT Price, listingDate FROM data_price WHERE 
+	houseId_id = '{}' 
+	AND ( listingDate >= '{}' AND listingDate <= '{}')
+
+	""".format(id, startDate, endDate))
+
+	
+	data = cursor.fetchall()
+	
+	dates = []
+	prices = []
+
+	for price in data:
+		# print(price)
+		prices.append(price[0])
+		dates.append( price[1])
+
+	plt.plot(dates, prices)
+	plt.title(region)
+	plt.xlabel('Years')
+	plt.savefig('static/data/plot.png')
+
+
+def current_view(request):
 	context = {}
 
 	
@@ -19,7 +56,7 @@ def future_view(request):
 		form = queryForm(request.POST)
 		if form.is_valid() == False:
 			context['query_form'] = queryForm()
-			return render(request, 'data/future.html', context=context)
+			return render(request, 'data/current.html', context=context)
 
 		region = form.cleaned_data['region']
 		houseType = form.cleaned_data['houseType']
@@ -50,41 +87,20 @@ def future_view(request):
 				}
 				data.append(info)
 			context['data'] = data
-
+			context['plot_exists'] = True
+			create_plot(region, houseType, startDate, endDate)
 	else:
 		form = queryForm()
 		context['query_form'] = form
-
-
-
-	return render(request, 'data/future.html', context=context)
-
-def current_view(request):
-	context = {}
-	return render(request, 'data/current.html', context=context)
-
-def create_plot(request):
-	context = {}
-	cursor = connection.cursor()
-	region = 'Tallahassee Metro'
-	houseType = 'Studio'
-	cursor.execute("SELECT id FROM data_house WHERE region = '{}' AND HouseType = '{}'".format(region, houseType))
-	id = cursor.fetchone()[0]
-
-
-	cursor.execute("SELECT Price, listingDate FROM data_price WHERE houseId_id = '{}' ".format(id))
-	data = cursor.fetchall()
-	
-	dates = []
-	prices =[]
-
-	for price in data:
-		prices.append(price[0])
-		dates.append( price[1])
-
-	plt.plot(dates, prices)
-	plt.title(region)
-	plt.xlabel('Years')
-	plt.savefig('plot/plot.png')
+		context['plot_exists'] = False
 
 	return render(request, 'data/current.html', context=context)
+
+
+def show_plot(request):
+	image_data = open("static/data/plot.png", "rb").read()
+	return HttpResponse(image_data, content_type="image/png")
+
+def future_view(request):
+	context = {}
+	return render(request, 'data/future.html')

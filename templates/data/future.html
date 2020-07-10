@@ -11,42 +11,10 @@
   <!-- Flex Box -->
   <div class="d-flex flex-column">
 
-    <div class="form-group">
-      <form method="POST">
-        {% csrf_token %}
-        {{ query_form }}
-        <button type="submit" class="btn btn-primary">Make Query</button>
-      </form>
+    <p>
+      future Content Here
+    </p>
 
-      {% if data %}
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Region</th>
-            <th scope="col">Type</th>
-            <th scope="col">Date</th>
-            <th scope="col">Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in data %}
-          <tr>
-            <td>{{ region }}</td>
-            <td>{{ type }}</td>
-            <td>{{ item.date }}</td>
-            <td>{{ item.price }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-      {% endif %}
-
-
-
-
-
-    </div>
 
   </div>
 </div>

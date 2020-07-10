@@ -1,0 +1,22 @@
+{% extends 'data/base.html' %}
+
+{% block body_block %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+	<p class="lead"> Current Content </p>
+
+</div>
+
+<div class="container">
+	<!-- Flex Box -->
+	<div class="d-flex flex-column">
+		<p>THIS IS A TEST</p>
+		{% load static %}
+		<img src="{% static 'data/plot.png' %}" alt="My image" />
+
+
+	</div>
+</div>
+
+
+{% endblock %}
