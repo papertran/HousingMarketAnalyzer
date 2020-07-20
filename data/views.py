@@ -73,7 +73,7 @@ def current_view(request):
 			# Get listings
 			cursor.execute("""
 			SELECT Price, listingDate FROM data_price WHERE 
-			houseId_id = '{}' 
+			houseId_id = '{}'
 			AND ( listingDate >= '{}' AND listingDate <= '{}')
 			ORDER BY listingDate DESC
 			""".format(HouseId, startDate, endDate))

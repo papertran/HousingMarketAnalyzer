@@ -5,7 +5,7 @@ class queryForm(forms.Form):
 	region = forms.ChoiceField(choices=regions)
 	type_choices = [
         ('All Homes', 'All Homes'),
-        ('Single Family', 'Single Family'),
+        # ('Single Family', 'Single Family'),
         ('Condo', 'Condo'),
         ('Top Tier', 'Top Tier'),
         ('Middle Tier', 'Middle Tier'),
@@ -14,7 +14,7 @@ class queryForm(forms.Form):
         ('One Bed', 'One Bed'),
         ('Two Bed', 'Two Bed'),
         ('Three Bed', 'Three Bed'),
-        ('Four Four', 'Four Bed'),
+        # ('Four Four', 'Four Bed'),
         # ('Many Four', 'Many Bed'),
     ]
 	houseType = forms.ChoiceField(choices= type_choices)
