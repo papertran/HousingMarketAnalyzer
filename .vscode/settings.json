@@ -3,6 +3,5 @@
 	"python.linting.pylintArgs": [
 		"--disable=C0111", // missing docstring
 		"--load-plugins=pylint_django,pylint_celery"
-	],
-	"python.pythonPath": "C:\\Users\\Phat\\AppData\\Local\\Programs\\Python\\Python36-32\\python.exe"
+	]
 }

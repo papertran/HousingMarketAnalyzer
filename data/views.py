@@ -12,7 +12,12 @@ def index_view(request):
 	return render(request, 'data/index.html', context=context)
 
 # Helper Function
-def create_plot(region, houseType, startDate, endDate,):
+# if true save graph
+def create_plot(region, houseType, startDate, endDate, plotFuture = False):
+	saveLocation = 'static/data/plot.png'
+	if plotFuture:
+		saveLocation = 'static/data/future.png'
+
 	plt.cla()
 	context = {}
 	cursor = connection.cursor()
@@ -23,12 +28,18 @@ def create_plot(region, houseType, startDate, endDate,):
 
 
 	# cursor.execute("SELECT Price, listingDate FROM data_price WHERE houseId_id = '{}' ".format(id))
-	cursor.execute("""
-	SELECT Price, listingDate FROM data_price WHERE 
-	houseId_id = '{}' 
-	AND ( listingDate >= '{}' AND listingDate <= '{}')
-
-	""".format(id, startDate, endDate))
+	if plotFuture:
+		cursor.execute("""
+		SELECT Price, listingDate FROM data_price WHERE 
+		houseId_id = '{}' 
+		AND Predicted = True
+		""".format(id))
+	else:
+		cursor.execute("""
+		SELECT Price, listingDate FROM data_price WHERE 
+		houseId_id = '{}' 
+		AND ( listingDate >= '{}' AND listingDate <= '{}')
+		""".format(id, startDate, endDate))
 
 	
 	data = cursor.fetchall()
@@ -44,13 +55,12 @@ def create_plot(region, houseType, startDate, endDate,):
 	plt.plot(dates, prices)
 	plt.title(region)
 	plt.xlabel('Years')
-	plt.savefig('static/data/plot.png')
+	plt.savefig(saveLocation)
 
 
 def current_view(request):
 	context = {}
 
-	
 	# Do this after the user enters in data
 	if(request.POST):
 		form = queryForm(request.POST)
@@ -89,6 +99,11 @@ def current_view(request):
 			context['data'] = data
 			context['plot_exists'] = True
 			create_plot(region, houseType, startDate, endDate)
+			create_plot(region, houseType, startDate, endDate, True)
+
+
+
+
 	else:
 		form = queryForm()
 		context['query_form'] = form
@@ -100,6 +115,11 @@ def current_view(request):
 def show_plot(request):
 	image_data = open("static/data/plot.png", "rb").read()
 	return HttpResponse(image_data, content_type="image/png")
+
+def show_future_plot(request):
+	image_data = open("static/data/future.png", "rb").read()
+	return HttpResponse(image_data, content_type="image/png")
+
 
 def future_view(request):
 	context = {}
