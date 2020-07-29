@@ -18,7 +18,7 @@ class queryForm(forms.Form):
         # ('Many Four', 'Many Bed'),
     ]
 	houseType = forms.ChoiceField(choices= type_choices)
-	startDate = forms.DateField(label="Start Date", widget=forms.DateInput(attrs={'type':'date'}), required=True)
-	endDate = forms.DateField(label="End Date", widget=forms.DateInput(attrs={'type':'date'}), required=True)
+	# startDate = forms.DateField(label="Start Date", widget=forms.DateInput(attrs={'type':'date'}), required=True)
+	# endDate = forms.DateField(label="End Date", widget=forms.DateInput(attrs={'type':'date'}), required=True)
 
 	

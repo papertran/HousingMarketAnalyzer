@@ -3,6 +3,9 @@ import os
 import sqlite3
 import csv
 import math
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
 # Usage - python3 dataLoadScript.py <filename>
 # This does not error check. assumes folder contains only files with correct format
 
@@ -48,7 +51,8 @@ for house in lines:
 
 	# Show stuff in inserting
 	if inserVal % 100 == 0:
-		print(inserVal)
+		print("Inserted {} entries".format(inserVal))
+
 	inserVal += 1
 
 	# Get the house id 
@@ -58,23 +62,34 @@ for house in lines:
 	try:
 		houseId = cur.fetchone()[0]
 	except Exception as e:
-			print("error house id not found: ", end='')
-			print(e)
+			# print("error house id not found: ", end='')
+			# print( "region = '{}' AND HouseType = '{}'".format(house[0], house[2]))
 			continue
 	# print(houseId)
 
+	
+	findLastDate = "SELECT listingDate FROM data_price WHERE houseId_id = '{}' ORDER BY listingDate DESC".format(houseId)
+	cur.execute(findLastDate)
+	lastDate = cur.fetchone()[0]
+	lastDate = datetime.strptime( lastDate, "%Y-%m-%d")
 
+	# Get 6 months after last date
+	dateArray = []
+	for i in range(6):
+		increment =  relativedelta(months=+1)
+		lastDate = lastDate + increment
+		dateArray.append(lastDate)
+	
 	# Insert into the Price Table
 	counter = 0
-	dateFormat = "{}-{}-1"
+	dateFormat = "{}-{}-15"
 	for value in house[3:]:
 		# print(value)
 		priceInsert = "INSERT INTO data_price (listingDate, Price, houseId_id, Predicted) VALUES ('{}', '{}', '{}', True)"
 		cleanedValue = math.floor(float(value))
-		date = dateFormat.format(year, months[counter])
+		date = dateArray[counter].date()
 		counter += 1
 
-		
 		try:
 			con.execute(priceInsert.format(date, cleanedValue, houseId))
 		except Exception as e:

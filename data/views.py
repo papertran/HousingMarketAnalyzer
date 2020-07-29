@@ -13,7 +13,7 @@ def index_view(request):
 
 # Helper Function
 # if true save graph
-def create_plot(region, houseType, startDate, endDate, plotFuture = False):
+def create_plot(region, houseType,  plotFuture = False):
 	saveLocation = 'static/data/plot.png'
 	if plotFuture:
 		saveLocation = 'static/data/future.png'
@@ -38,8 +38,7 @@ def create_plot(region, houseType, startDate, endDate, plotFuture = False):
 		cursor.execute("""
 		SELECT Price, listingDate FROM data_price WHERE 
 		houseId_id = '{}' 
-		AND ( listingDate >= '{}' AND listingDate <= '{}')
-		""".format(id, startDate, endDate))
+		""".format(id))
 
 	
 	data = cursor.fetchall()
@@ -70,8 +69,8 @@ def current_view(request):
 
 		region = form.cleaned_data['region']
 		houseType = form.cleaned_data['houseType']
-		startDate = form.cleaned_data['startDate']
-		endDate = form.cleaned_data['endDate']
+		# startDate = form.cleaned_data['startDate']
+		# endDate = form.cleaned_data['endDate']
 		# print(region,houseType,startDate,endDate)
 		with connection.cursor() as cursor:
 			# Get House ID
@@ -81,12 +80,17 @@ def current_view(request):
 			context['region'] = region 
 			context['type'] = houseType
 			# Get listings
+			# cursor.execute("""
+			# SELECT Price, listingDate FROM data_price WHERE 
+			# houseId_id = '{}'
+			# AND ( listingDate >= '{}' AND listingDate <= '{}')
+			# ORDER BY listingDate DESC
+			# """.format(HouseId, startDate, endDate))
 			cursor.execute("""
 			SELECT Price, listingDate FROM data_price WHERE 
 			houseId_id = '{}'
-			AND ( listingDate >= '{}' AND listingDate <= '{}')
 			ORDER BY listingDate DESC
-			""".format(HouseId, startDate, endDate))
+			""".format(HouseId))
 			query = cursor.fetchall()
 			data = []
 			for item in query:
@@ -98,8 +102,8 @@ def current_view(request):
 				data.append(info)
 			context['data'] = data
 			context['plot_exists'] = True
-			create_plot(region, houseType, startDate, endDate)
-			create_plot(region, houseType, startDate, endDate, True)
+			create_plot(region, houseType)
+			create_plot(region, houseType, True)
 
 
 
