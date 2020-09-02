@@ -1,5 +1,20 @@
 # Housing Market Analyzer
-This is a project for COP4521. Housing Market Analyzer is a web based application that displays housing data taken from zillow and shows a graph of it, along with a graph of perdicted housing data, based on a linear regression model. The data is generated and loaded to the database beforehand.
+This is a project for COP4521. Housing Market Analyzer is a web based application that displays housing data taken from Zillow and shows a graph of it, along with a graph of perdicted housing data, based on a linear regression model. The data is generated and loaded to the database beforehand.
+
+<br/>
+Homescreen
+<br/>
+<img src="https://user-images.githubusercontent.com/19595312/91919103-e9327580-ec92-11ea-9ab0-ec87d2528002.PNG"/>
+
+<br/>
+Query
+</br>
+<img src="https://user-images.githubusercontent.com/19595312/91919105-e9327580-ec92-11ea-988b-31458bc012a4.PNG"/>
+
+<br/>
+Plotted Graphs
+<br/>
+<img src="https://user-images.githubusercontent.com/19595312/91919104-e9327580-ec92-11ea-8f43-53039cfcc857.PNG"/>
 
 ## Make Sure the follwing is installed
 
